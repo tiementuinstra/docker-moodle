@@ -1,0 +1,44 @@
+version: '3.2'
+
+services:
+
+  httpd:
+    build:
+      context: './httpd/'
+    container_name: ${COMPOSE_PROJECT_NAME}_httpd
+    depends_on:
+      - php
+    environment:
+      SERVERNAME: ${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # /path/to/project.test:/var/www.html/
+      - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/htdocs:${APP_DIR}
+
+  php:
+    build: './php/'
+    container_name: ${COMPOSE_PROJECT_NAME}_php-fpm
+    env_file:
+      - ./php/php.env
+    environment:
+      # NOTE I:  any cron request will disrupt an xdebug session
+      # NOTE II: you can override these in .env
+      - XDEBUG_IDEKEY=${XDEBUG_IDEKEY:-VSCODE}
+      - XDEBUG_REMOTE_HOST=${XDEBUG_REMOTE_HOST:-10.0.2.15}
+      - XDEBUG_REMOTE_PORT=${XDEBUG_REMOTE_PORT:-9000}
+    extra_hosts:
+      - "dataserver.test:192.168.142.201"
+    networks:
+      - backend
+    volumes:
+      - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/htdocs:${APP_DIR}
+      - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/moodledata:/var/www/moodledata
+
+networks:
+  frontend:
+  backend:
