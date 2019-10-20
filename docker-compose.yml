@@ -37,7 +37,7 @@ services:
       - backend
     volumes:
       - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/htdocs:${APP_DIR}
-      - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/moodledata:/var/www/moodledata
+      - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/sitedata:/var/www/sitedata
 
 networks:
   frontend:

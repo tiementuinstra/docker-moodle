@@ -9,7 +9,7 @@
 
 1. create a project tree with moodle structure in ~/projects (eg. moodle35.test), and in there:
   - `git checkout` a moodle branch in folder `htdocs`
-  - `mkdir moodledata`
+  - `mkdir sitedata`
 2. checkout *this* repo in your docker folder (eg. `~/docker/moodle35`)
 3. `cd ~/docker/moodle35` and copy `.env-dist` to `.env` and set `COMPOSE_PROJECT_NAME` (eg. moodle35)
 4. `docker-compose up -d` builds and starts the Moodle environment

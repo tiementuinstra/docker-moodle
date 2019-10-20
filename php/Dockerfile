@@ -24,8 +24,8 @@ FROM base AS development
 RUN apk --no-cache add freetype icu libjpeg-turbo libmcrypt libpng findutils
 RUN addgroup -g 1000 -S app \
     && adduser -u 1000 -S app -G app \
-    && mkdir -p /var/www/moodledata \
-    && chown -R app:app /var/www/moodledata
+    && mkdir -p /var/www/sitedata \
+    && chown -R app:app /var/www/sitedata
 
 COPY --from=extensions /usr/local/lib/php/extensions/no-debug-non-zts-20170718/curl.so /usr/local/lib/php/extensions/no-debug-non-zts-20170718/curl.so
 
