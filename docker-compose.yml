@@ -20,6 +20,12 @@ services:
       # /path/to/project.test:/var/www.html/
       - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/htdocs:${APP_DIR}
 
+  memcached:
+    image: memcached:alpine
+    container_name: ${COMPOSE_PROJECT_NAME}_memcached
+    networks:
+      - backend
+
   php:
     build: './php/'
     container_name: ${COMPOSE_PROJECT_NAME}_php-fpm
