@@ -5,10 +5,10 @@ WORKDIR /var/www/html
 RUN set -xe \
     && apk update \
     && apk add --no-cache --update --virtual .phpize-deps $PHPIZE_DEPS \
-    && apk add --no-cache --virtual .build-dependencies freetype-dev icu-dev libffi-dev libjpeg-turbo-dev libmcrypt-dev libpng-dev libxml2-dev zlib-dev \
+    && apk add --no-cache --virtual .build-dependencies autoconf freetype-dev icu-dev libffi-dev libjpeg-turbo-dev libmcrypt-dev libmemcached-dev libpng-dev libxml2-dev zlib-dev \
     && docker-php-source extract \
-    && pecl install xdebug redis \
-    && docker-php-ext-enable opcache redis xdebug \
+    && pecl install xdebug memcached-3.1.4 \
+    && docker-php-ext-enable memcached opcache xdebug \
     && docker-php-source delete \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install intl gd mcrypt mysqli soap xmlrpc zip \
@@ -16,7 +16,7 @@ RUN set -xe \
     && apk del .build-dependencies .phpize-deps \
     && rm -rf /tmp/*
 
-RUN apk --no-cache add freetype icu libjpeg-turbo libmcrypt libpng findutils
+RUN apk --no-cache add freetype icu libjpeg-turbo libmcrypt libmemcached libpng findutils
 RUN addgroup -g 1000 -S app \
     && adduser -u 1000 -S app -G app \
     && mkdir -p /var/www/moodledata \
