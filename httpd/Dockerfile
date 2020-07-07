@@ -1,4 +1,4 @@
-FROM httpd:2.4.41-alpine
+FROM httpd:2.4.43-alpine
 
 RUN apk --no-cache add openssl
 COPY generate-ssl.sh /root
