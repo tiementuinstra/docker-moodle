@@ -13,7 +13,7 @@ RUN set -xe \
     && docker-php-ext-enable mcrypt memcached opcache xdebug \
     && docker-php-source delete \
     && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) intl gd mysqli soap xml xmlrpc zip \
+    && docker-php-ext-install -j$(nproc) exif intl gd mysqli soap xml xmlrpc zip \
     && cd / && rm -fr /usr/src /usr/share \
     && apk del .build-dependencies .phpize-deps \
     && rm -rf /tmp/*
@@ -23,8 +23,11 @@ FROM base AS development
 RUN apk --no-cache add freetype icu libjpeg-turbo libmcrypt libmemcached libpng libzip findutils
 RUN addgroup -g 1000 -S app \
     && adduser -u 1000 -S app -G app \
-    && mkdir -p /var/www/moodledata \
-    && chown -R app:app /var/www/moodledata
+    && mkdir -p /var/www/sitedata \
+    && chown -R app:app /var/www/sitedata
+
+COPY --from=extensions /usr/local/lib/php/extensions/no-debug-non-zts-20190902/exif.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/exif.so
+COPY --from=extensions /usr/local/etc/php/conf.d/docker-php-ext-exif.ini /usr/local/etc/php/conf.d/docker-php-ext-exif.ini
 
 COPY --from=extensions /usr/local/lib/php/extensions/no-debug-non-zts-20190902/gd.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/gd.so
 COPY --from=extensions /usr/local/etc/php/conf.d/docker-php-ext-gd.ini /usr/local/etc/php/conf.d/docker-php-ext-gd.ini
