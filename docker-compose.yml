@@ -45,6 +45,18 @@ services:
       - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/htdocs:${APP_DIR}
       - ${PROJECT_ROOT}/${COMPOSE_PROJECT_NAME}.${DOMAIN_EXTENSION}/sitedata:/var/www/sitedata
 
+# NOTE: after installing Solr create a core and use its name (moodle) as the index
+# NOTE:     docker exec -t container_of_solr bin/solr create -c moodle
+  # solr:
+  #   command:
+  #     - solr-precreate
+  #   container_name: ${COMPOSE_PROJECT_NAME}_solr
+  #   image: solr:8
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - "8983:8983"
+
 networks:
   frontend:
   backend:
